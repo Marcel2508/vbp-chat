@@ -1,0 +1,341 @@
+.chat-open
+{
+    font-family: sans-serif;
+    display:block;
+    position:fixed;
+    z-index:999999;
+    bottom:5px;
+    right:5px;
+    border-radius: 999px;
+    width:50px;
+    height:50px;
+    background-color: #1976D2;
+    color: #d8e7f5;
+    font-size:20px;
+    line-height: 50px;
+    text-align:center;
+    box-shadow: 1px 1px 1px 2px #BCBCBC;
+    transition: 1s;
+    cursor:pointer;
+}
+.chat-open:hover
+{
+    background-color: #155DA4;
+    transition: background-color 1s;
+}
+
+.chat-open i.material-icons
+{
+    color: #d8e7f5;
+    font-size:20px;
+    line-height: 50px;
+}
+
+.chat-open #pendingMessageCount
+{
+    background-color: #c0392b;
+    color: #FFFFFF;
+    border-radius: 999px;
+    position: absolute;
+    z-index:999px;
+    font-size:14px;
+    height:20px;
+    width:20px;
+    top:-2px;
+    right:-2px;
+    height: auto;
+    line-height:20px;
+}
+
+.chat-window
+{
+    font-family: sans-serif;
+    position: fixed;
+    bottom:10px;
+    right: 60px;
+    border: 1px solid #BCBCBC;
+    width: 320px;
+    height: 450px;
+    background-color: #FFFFFF;
+    box-shadow: 2px 2px 5px 1px #BCBCBC;
+    display:none;
+    overflow:hidden;
+}
+
+.chat-window .chat-cb
+{
+    clear:both;
+}
+
+.chat-window.visible
+{
+    display:block !important;
+}
+
+.chat-window .chat-title
+{
+    background-color: #1976D2;
+    color: #FFFFFF;
+    font-size:18px;
+    line-height: 25px;
+    height: 25px;
+    padding-left:3px;
+    cursor:default;
+}
+
+.chat-window .chat-title .right
+{
+    float:right;
+    color: #FFFFFF;
+    display:block;
+    cursor:pointer;
+    transition: background-color 0.5s;
+}
+
+.chat-window .chat-title .right:hover
+{
+    transition: background-color 0.5s;
+    background-color: rgba(255,255,255,0.2);
+}
+
+.chat-window div.chat-messages
+{
+    overflow-y:scroll;
+    overflow-x:hidden;
+    height:calc(100% - 25px - 40px - 8px);
+    width:100%;
+    margin:0px;
+}
+
+.chat-window .chat-messages .chat-message .chat-bubble
+{
+    display:block;
+    position:relative;
+    height:auto;
+    overflow:hidden;
+    margin-top: 10px;
+    margin-bottom:10px;
+    float:left;
+    background-color: #ECF1F5;
+    box-shadow: 1px 1px 3px 1px #565656;
+    padding:5px;
+    border-radius:5px;
+    font-size:14px;
+    line-height:16px;
+
+    margin-left: 10px; 
+    max-width: calc(100% - 52px);
+    min-width:50%;
+}
+
+.chat-window .chat-messages .chat-message .chat-bubble.self
+{
+    margin-right:10px;
+    margin-left: 0px;
+    float:right;
+    background-color: #d8e7f5;
+}
+
+.chat-window .chat-messages .chat-message .chat-bubble .chat-from
+{
+    display:block;
+    text-align:left;
+    color: #505050;
+    font-weight:bold;
+    font-size:12px;
+    line-height:13px;
+    cursor:default;
+}
+
+.chat-window .chat-messages .chat-message .chat-bubble .chat-text
+{
+    display:block;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+.chat-window .chat-messages .chat-message .chat-bubble .chat-time
+{
+    display:block;
+    text-align:right;
+    color: #505050;
+    font-weight:bold;
+    font-size:12px;
+    line-height:13px;
+    cursor:default;
+}
+
+.chat-window .chat-textbox
+{
+    font-family: sans-serif;
+    padding-left:10px !important;
+    padding-right:10px !important;
+    width:calc(100% - 40px);
+    line-height:30px;
+    font-size:18px;
+    height:40px;
+    border:0;
+    outline: 0;
+    border-bottom:2px solid #DEDEDE;
+    padding:0px;
+    margin:0px;
+    float:left;
+    transition: border-bottom 0.5s;
+    background-color: #FFFFFF;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.chat-window .chat-textbox::placeholder
+{
+    color: #9B9B9B;
+}
+
+.chat-window .chat-textbox:hover
+{
+    border:0;
+    background-color: #FFFFFF;
+    box-shadow: none;
+    border-bottom:2px solid #DEDEDE;
+}
+
+.chat-window .chat-textbox:focus
+{
+    border:0;
+    transition: border-bottom 0.5s;
+    border-bottom:2px solid #565656;
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+
+.chat-window .chat-send
+{
+    background: none;
+    display:block;
+    float:right;
+    height:40px;
+    width: 40px;
+    background-color: #FFFFFF;
+    border:0;
+    outline:0;
+    text-align:center;
+    cursor:pointer;
+    margin:0px;
+    padding:0px;
+    box-shadow: none;
+}
+.chat-window .chat-send:hover
+{
+    background: none;
+    box-shadow: none;
+    border: 0;
+    background-color: #FFFFFF;
+}
+
+.chat-window .chat-send .material-icons
+{
+    color: #1976D2;
+    cursor:pointer;
+    transition: color 0.5s;
+}
+.chat-window .chat-send .material-icons:hover
+{
+    color: #155DA4;
+    transition: color 0.5s;
+}
+
+.chat-window .authMaker h3
+{
+    text-align:center;
+    color: #1976D2;
+    font-size:30px;
+    line-height:36px;
+    padding:0px;
+    margin:0px;
+    margin-top:20px;
+}
+
+.chat-window .authMaker span
+{
+    display:block;
+    text-align:center;
+    color: #787878;
+}
+
+.chat-window .authMaker input
+{
+    padding:0px;
+    margin:0px;
+    margin-top:30px;
+    font-family: sans-serif;
+    padding-left:10px;
+    padding-right:10px;
+    width:calc(100% - 20px);
+    margin-left:10px;
+    line-height:30px;
+    font-size:18px;
+    height:40px;
+    border:0;
+    outline: 0;
+    border-bottom:2px solid #DEDEDE;
+    transition: border-bottom 0.5s;
+    background-color: #FFFFFF;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+.chat-window .authMaker input::placeholder
+{
+    color: #9B9B9B;
+}
+
+.chat-window .authMaker input:hover
+{
+    border:0;
+    background-color: #FFFFFF;
+    box-shadow: none;
+    border-bottom:2px solid #DEDEDE;
+}
+
+.chat-window .authMaker input:focus
+{
+    border:0;
+    transition: border-bottom 0.5s;
+    border-bottom:2px solid #565656;
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+
+.chat-window .authMaker button
+{
+    background:none;
+    display:block;
+    width: calc(100% - 22px);
+    border: 1px solid #155DA4;
+    background-color: #1976D2;
+    color: #FFFFFF;
+    margin-left: 10px;
+    cursor:pointer;
+    margin-top:30px;
+    transition: background-color 0.5s;
+    padding:0px;
+    box-shadow: none;
+    border-radius: 0;
+}
+.chat-window .authMaker button:hover
+{
+    background: none;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    background-color: #2B88E4;
+    transition: background-color 0.5s;
+    border: 1px solid #155DA4;
+}
+
+.chat-window .authMaker .chat-span-2
+{
+    margin-top: 30px;
+}
+
+/*#62A8ED*/
