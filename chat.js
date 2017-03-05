@@ -167,6 +167,13 @@ function startChat()
                     console.error("CHAT: System detected Auth Break.");
                     chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Security Error</h3>Ein Fataler Sicherheitsverstoß ist aufgetreten. Ihr Client wird blockiert!</span></div>";
                     break;
+                case "authChallenge":
+                    chatAuthChallenge(resp.challenge);
+                    break;
+                case "challengeError":
+                    chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Security Error</h3>Fataler Authentication Fehler!</span></div>";
+                    console.error("Login Challenge Error!");
+                    break;
             }
         }
     });
@@ -177,6 +184,20 @@ function startChat()
             chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Parallelitäts Fehler</h3><span class='chat-span-2'>Dieser Chat ist nicht mehr Verbunden. Hast du villeicht einen anderen Tab mit selbigem auf?</span></div>";
 
     });
+}
+
+
+function chatAuthChallenge(challenge)
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            socket.emit("command",JSON.stringify({command:"authChallengeComplete"}));
+        }
+    };
+    xhttp.open("GET", challenge, true);
+    xhttp.send();
 }
 
 function chatSendMessage(ev)
@@ -235,7 +256,7 @@ function makeAuthLogin()
         }
     }
     else if(document.getElementById("userMenu")){
-        socket.emit("authenticate",JSON.stringify({"error":false,type:"loggedIn",username:document.getElementById("userMenu").children[0].children[1].innerHTML}));
+        socket.emit("authenticate",JSON.stringify({"error":false,type:"loggedIn",username:document.getElementById("userMenu").children[0].children[1].innerHTML,"userLink":document.getElementById("userMenu").children[0].href}));
     }
     else{
         chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Login</h3><br/><span>Logge dich mit deiner E-Mail Adresse als Gast ein:</span><br/><input type='email' id='chat-login-email' placeholder='name@domain.de'/><br><button id='submit' onclick='chatGuestLogin();'><i class='material-icons'>done</i></button><span class='chat-span-2'>Bitte beachte, dass du als Gast nur alle 30 Sekunden Nachrichten verschicken kannst!<br/><br/>Beleidigungen, Spam oder Sexuelle Inhalte werden mit permanenten Ausschluss aus diesem Chat-System geahndet!</span></div>";
