@@ -51,6 +51,7 @@ function chatStartup()
 
 function lastMsgAnimation()
 {
+    if(!isGuest)return;
     var tb = document.getElementById("chatInput");
     if(lastMsg>0){
         tb.setAttribute("placeholder","Noch "+lastMsg+" Sekunden");
@@ -98,6 +99,8 @@ function startChat()
             console.error("CHAT:",resp);
         }
         else{
+            console.log("Got Auth");
+            console.log(resp);
             switch(resp.status){
                 case "AUTH":
                     if(chatAuthT){localStorage.removeItem("chatAuthenticate");}
@@ -110,7 +113,7 @@ function startChat()
                     //console.log("OK AUTH");
                     if(resp.utype=="guest")isGuest=true;
                     chatAuth=true;
-                    chatMe = resp.myHash;
+                    chatMe = resp.myUser;
                     chatClientType=resp.type;
                     break;
                 default:
@@ -127,10 +130,11 @@ function startChat()
             console.error("CHAT:",resp);
         }
         else{
+            console.log("got Message");
             if(!chatLoaded)
                 incPendingMessages();
             else{
-                displayChatMessage(resp.sender,resp.message,resp.sender.hash==chatMe);
+                displayChatMessage(resp.sender,resp.message,resp.sender.name==chatMe);
                 if(!chatOpen)incPendingMessages();
             }
         }
@@ -146,8 +150,9 @@ function startChat()
                 case "setRecentMessages":
                 //console.log("srm");
                     if(chatMe){
-                        resp.messages.forEach(function(m){
-                            if(m.sender.hash == chatMe)displayChatMessage(m.sender,m,true);
+                            console.log("got Recent Messages");
+                            resp.messages.forEach(function(m){
+                            if(m.sender.name == chatMe)displayChatMessage(m.sender,m,true);
                             else displayChatMessage(m.sender,m,false);
                         });
                     }
@@ -157,7 +162,7 @@ function startChat()
                         console.log("CHAT: Authentication Success!");
                         if(resp.utype=="guest")isGuest=true;
                         chatAuth=true;
-                        chatMe=resp.myHash;
+                        chatMe=resp.myUser;
                         localStorage.setItem("chatAuthenticate",JSON.stringify({timestamp:Math.floor(Date.now()/1000),secret:resp.secret}));
                         chatWindow.innerHTML = '<div class="chat-title">VB-Paradise.de Chat<a class="right" onclick="hideChat(this,event);"><i class="material-icons">close</i></a></div><div class="chat-messages" id="chatOutput"></div><input type="text" id="chatInput" class="chat-textbox" onkeypress="return chatSendMessage(event);" maxlength="512"/><button id="chatSend" class="chat-send" onclick="chatSendMessage();"><i class="material-icons">send</i></button><div class="chat-cb"></div>';
                         if(chatOpen){initChat();chatLoaded=true;}
@@ -168,6 +173,7 @@ function startChat()
                     chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Security Error</h3>Ein Fataler Sicherheitsverstoß ist aufgetreten. Ihr Client wird blockiert!</span></div>";
                     break;
                 case "authChallenge":
+                    console.log("got Auth Challenge");
                     chatAuthChallenge(resp.challenge);
                     break;
                 case "challengeError":
@@ -179,6 +185,7 @@ function startChat()
     });
 
     socket.on("disconnect",function(){
+        console.log("Disconnected");
         socket.disconnect();
         if(!chatInMainM)
             chatWindow.innerHTML = "<div class='chat-title'>VB-Paradise.de Chat<a class='right' onclick='hideChat(this,event);'><i class='material-icons'>close</i></a></div><div class='authMaker'><h3>Parallelitäts Fehler</h3><span class='chat-span-2'>Dieser Chat ist nicht mehr Verbunden. Hast du villeicht einen anderen Tab mit selbigem auf?</span></div>";
@@ -189,9 +196,11 @@ function startChat()
 
 function chatAuthChallenge(challenge)
 {
+    console.log("Doing:",challenge);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
+            console.log("XHR CONTENT:");
             console.log(this.responseText);
             socket.emit("command",JSON.stringify({command:"authChallengeComplete"}));
         }
@@ -301,6 +310,8 @@ function initChat()
 
 function showChat()
 {
+    if(chatOpen)return hideChat();
+
     if(!chatLoaded&&chatAuth){
         initChat();
         chatLoaded=true;
